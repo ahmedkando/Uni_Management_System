@@ -1,18 +1,14 @@
 package com.mycompany.advanced_project;
+
 import javax.swing.*;
-
-import com.mycompany.advanced_project.Databasemanager;
-
+import com.mycompany.advanced_project.DB.DatabaseManager;
+import com.mycompany.advanced_project.Panels_Fields.UniversityGUI;
 import java.util.Scanner;
 
-/**
- *
- * @author VICTUS
- */
 public class Launcher {
 
     public static void main(String[] args) {
-        Databasemanager.intitDatabase();
+        DatabaseManager.intitDatabase();
         System_controller system = new System_controller();
 
         System.out.println("Choose mode:");

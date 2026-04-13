@@ -1,23 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.advanced_project;
 
-/**
- *
- * @author VICTUS
- */
-import com.mycompany.advanced_project.Course;
-import com.mycompany.advanced_project.Instructor;
-import com.mycompany.advanced_project.Student;
-import com.mycompany.advanced_project.System_controller;
-import com.mycompany.advanced_project.User;
-import java.util.*;
-
-/**
- */
-
+import com.mycompany.advanced_project.Classes.Course;
+import com.mycompany.advanced_project.Classes.Instructor;
+import com.mycompany.advanced_project.Classes.Student;
 import java.util.*;
 
 public class Uni_managment_system {
