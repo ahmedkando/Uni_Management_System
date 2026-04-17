@@ -18,7 +18,6 @@ public class DatabaseManager {
     }
 
     public static void intitDatabase() {
-
         try (Connection conn = connect()) {
 
             conn.createStatement().execute(
