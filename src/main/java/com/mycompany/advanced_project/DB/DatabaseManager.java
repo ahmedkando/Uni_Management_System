@@ -1,19 +1,14 @@
 package com.mycompany.advanced_project.DB;
 
-import java.net.SocketTimeoutException;
+
 import java.sql.*;
-
-import javax.naming.spi.DirStateFactory.Result;
-
-import com.mycompany.advanced_project.System_controller;
 import com.mycompany.advanced_project.Classes.*;
 
 public class DatabaseManager {
 
-    private static final String DB_URL = "jdbc:sqlite:data/university.db";
+    private static final String DB_URL = "";
 
     private static Connection connect() throws SQLException {
-        new java.io.File("data").mkdirs();
         return DriverManager.getConnection(DB_URL);
     }
 
