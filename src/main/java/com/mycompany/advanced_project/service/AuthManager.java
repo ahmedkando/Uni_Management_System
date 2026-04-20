@@ -1,6 +1,6 @@
 package com.mycompany.advanced_project.service;
 
-import com.mycompany.advanced_project.DB.DatabaseManager;
+import com.mycompany.advanced_project.DB.*;
 import com.mycompany.advanced_project.Classes.User;
 import com.mycompany.advanced_project.exceptions.*;
 import java.security.*;
@@ -13,7 +13,7 @@ public class AuthManager {
         if (password == null || password.isBlank())
             throw new AuthException("Password cannot be empty.");
 
-        String[] cre = DatabaseManager.findCredential(username);
+        String[] cre = CredentialDAO.findCredential(username);
         // if cre is null means no account found with that username
         if (cre == null) {
             throw new AuthException("not found for username  :" + username);
