@@ -3,29 +3,84 @@ package com.mycompany.advanced_project.service;
 import java.util.*;
 
 import com.mycompany.advanced_project.Classes.*;
+import com.mycompany.advanced_project.DB.*;
 
+public class System_controller {
 
-public class System_controller{
-
-    private Map<String, User> users;
-    private Map<String, Course> courses;
-    private Map<String, List<Announcement>> announcements;
+    private Map<Integer, User> users;
+    private Map<Integer, Course> courses;
+    private Map<Integer, List<Announcement>> announcements;
 
     public System_controller() {
-        this.users = new HashMap<String, User>();
-        this.courses = new HashMap<String, Course>();
-        this.announcements = new HashMap<String, List<Announcement>>();
+        this.users = new HashMap<>();
+        this.courses = new HashMap<>();
+        this.announcements = new HashMap<>();
     }
 
-    public Student addStudent(String username, String email) {
+    // call once at startup (after initDatabase)
+    public void loadAll() {
+        UserDAO.loadStudents(this);
+        UserDAO.loadInstructors(this);
+        CourseDAO.loadCourses(this);
+        EnrollmentDAO.loadEnrollments(this);
+        AnnouncementDAO.loadAnnouncements(this);
+    }
+
+    // called only by DAOs, no DB write
+
+    public Student loadStudent(int id, String username, String email) {
         Student s = new Student(username, email);
-        users.put(s.getId(), s);
+        // s.setId(id);
+        users.put(id, s);
         return s;
     }
 
-    public Instructor addInstructor(String username, String email) {
+    public Instructor loadInstructor(int id, String username, String email, double salary) {
         Instructor i = new Instructor(username, email);
-        users.put(i.getId(), i);
+        // i.setId(id);
+        users.put(id, i);
+        return i;
+    }
+
+    public Course loadCourse(int id, String name, int credits, String type, String detail) {
+        Course c;
+        if (type.equalsIgnoreCase("online")) {
+            c = new OnlineCourse(name, credits, detail);
+        } else {
+            c = new OfflineCourse(name, credits, detail);
+        }
+        // c.setId(id);
+        courses.put(id, c);
+        return c;
+
+    }
+
+    public void loadAnnouncement(int courseId, String content, String timestamp) {
+        if (!courses.containsKey(courseId))
+            return;
+        Announcement a = new Announcement(content);
+        announcements.computeIfAbsent(courseId, k -> new ArrayList<>()).add(a);
+    }
+
+    /* used by GUI each method saves to DB */
+
+    public Student addStudent(String username, String email) {
+        Student s = new Student(username, email);
+        int id = UserDAO.saveStudent(username, email);
+        if (id == -1)
+            return null;
+        // s.setId(id);
+        users.put(id, s);
+        return s;
+    }
+
+    public Instructor addInstructor(String username, String email, double salary) {
+        Instructor i = new Instructor(username, email);
+        int id = UserDAO.saveInstructor(username, email, salary);
+        if (id == -1)
+            return null;
+        // i.setId(id);
+        users.put(id, i);
         return i;
     }
 
@@ -36,64 +91,58 @@ public class System_controller{
         } else {
             c = new OfflineCourse(name, credits, detail);
         }
-        courses.put(c.getId(), c);
+        int id = CourseDAO.saveCourse(c);
+        if (id == -1)
+            return null;
+        // c.setId(id);
+        courses.put(id, c);
         return c;
 
     }
 
-    public boolean enrollStudent(String studentId, String courseId) {
-        User u=users.get(studentId);
-        Course c=courses.get(courseId);
-        if (u != null && c != null && u instanceof Student) {
-            Student s = (Student) u;
-            s.enrollCourse(courseId);
-            c.addStudent(studentId);
+    public boolean enrollStudent(int studentId, int courseId) {
+        User u = users.get(studentId);
+        Course c = courses.get(courseId);
+        if (u instanceof Student s && c != null) {
+            s.enrollCourse(c);
+            c.addStudent(s);
+            EnrollmentDAO.saveEnrollment(studentId, courseId);
             return true;
         }
         return false;
 
     }
 
-    public boolean removeStudent(String studentId) {
-        User u=users.get(studentId);
+    public boolean removeStudent(int studentId) {
+        User u = users.get(studentId);
 
-        if (u==null || !(u instanceof Student)) {
+        if (!(u instanceof Student s)) {
             return false;
         }
-        Student s=(Student) u;
-
-        for (String courseId : s.getEnrolledCourses()) {
-            Course c=courses.get(courseId);
-            if (c!=null){
-                c.removeStudent(studentId);
-            }
+        for (Course c : new ArrayList<>(s.getEnrolledCourses())) {
+            c.removeStudent(s);
         }
-
         users.remove(studentId);
+        UserDAO.deleteStudent(studentId);
         return true;
     }
 
-    public boolean postAnnouncement(String courseId, String text) {
-        if (courses.containsKey(courseId)) {
-            Announcement a = new Announcement(text);
-            if (!announcements.containsKey(courseId)) {
-                announcements.put(courseId, new ArrayList<Announcement>());
-            }
-            announcements.get(courseId).add(a);
-            return true;
-        }
-        return false;
+    public boolean postAnnouncement(int courseId, String text) {
+        if (!courses.containsKey(courseId))
+            return false;
+        Announcement a = new Announcement(text);
+        announcements.computeIfAbsent(courseId, k -> new ArrayList<>()).add(a);
+        AnnouncementDAO.saveAnnouncement(courseId, a);
+        return true;
 
     }
 
-    public List<String> getStudentFeed(String studentId) {
-        List<String> feed = new ArrayList<String>();
+    public List<String> getStudentFeed(int studentId) {
+        List<String> feed = new ArrayList<>();
         User u = users.get(studentId);
-        if (u != null && u instanceof Student) {
-            Student s = (Student) u;
-            for (String courseId : s.getEnrolledCourses()) {
-                Course c = courses.get(courseId);
-                List<Announcement> anns = announcements.get(courseId);
+        if (u instanceof Student s) {
+            for (Course c : s.getEnrolledCourses()) {
+                List<Announcement> anns = announcements.get(c.getId());
                 if (anns != null) {
                     for (Announcement a : anns) {
                         feed.add("[" + c.getName() + "] " + a.getContent());
@@ -104,17 +153,24 @@ public class System_controller{
         return feed;
     }
 
-    public boolean sendMessage(String fromId, String toId, String content) {
+    public boolean sendMessage(int fromId, int toId, String content) {
         User from = users.get(fromId);
         User to = users.get(toId);
         if (from != null && to != null) {
-            Message m = new Message(fromId, toId, content);
-            to.receiveMessage(m);
+            to.receiveMessage(new Message(from, to, content));
             return true;
         }
         return false;
     }
 
+    public User getUserById(int id) {
+        return users.get(id);
+    }
+
+    public Course getCourseById(int id) {
+        return courses.get(id);
+    }
+    
     public Collection<User> getAllUsers() {
         return users.values();
     }

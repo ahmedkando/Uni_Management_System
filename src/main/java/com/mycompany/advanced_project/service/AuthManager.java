@@ -3,7 +3,7 @@ package com.mycompany.advanced_project.service;
 import com.mycompany.advanced_project.DB.*;
 import com.mycompany.advanced_project.Classes.User;
 import com.mycompany.advanced_project.exceptions.*;
-import java.security.*;
+
 
 public class AuthManager {
 
@@ -18,13 +18,13 @@ public class AuthManager {
         if (cre == null) {
             throw new AuthException("not found for username  :" + username);
         }
-        // if hashed password does not match the stored hash
-        if (!cre[1].equals(hashPassword(password))) {
+        // if  password does not match the stored password
+        if (!cre[1].equals(password)) {
             throw new AuthException("Incorrect password.");
         }
         // Find user
         for (User u : system.getAllUsers()) {
-            if (u.getId().equals(cre[0])) {
+            if (u==null) {
                 System.out.println("login successful");
                 return u;
             }
@@ -34,7 +34,7 @@ public class AuthManager {
 
     }
 
- /*     public User signup(String registrationNumber, String username, String email, String role, String password,
+      public User signup( String username, String email, String role, String password,
             System_controller system) throws AuthException {
 
         // ---> validate the params
@@ -46,80 +46,28 @@ public class AuthManager {
             throw new AuthException("Password must be at least 6 characters.");
         if (!role.equalsIgnoreCase("student") && !role.equalsIgnoreCase("instructor"))
             throw new AuthException("Role must be 'student' or 'instructor'.");
+        if(CredentialDAO.usernameExists(username))
+        throw new AuthException("Username already exists.");
 
-        if (registrationNumber == null || registrationNumber.isEmpty()) {
-            throw new IllegalArgumentException("Registration number cannot be empty");
-
-        }
-        if (registrationNumber.length() < 6 || registrationNumber.length() > 9) {
-            throw new IllegalArgumentException("Registration number must be between 6 and 9 characters");
-        }
-        if (registrationNumber.matches("\\d+")) {
-            throw new IllegalArgumentException("Registration number must contain only digits");
-        }
-
-        // ---> check duplicates
-        if (DatabaseManager.usernameExists(username))
-            throw new AuthException(username + " is already taken.");
-        if (DatabaseManager.regNumberExists(registrationNumber))
-            throw new AuthException(registrationNumber + " is already registered.");
-
-        // ----> Hash the reg.number
-        String regHah = RegistrationHashing.hashandValidate(registrationNumber);
-
+        //Create user
         User newUser;
-        // ----> create user
-        try {
-            if(role.equalsIgnoreCase("student")){
-                newUser =system.addStudent( registrationNumber,
-                                                  username, email);
-            }
-            else{
-                newUser =system.addInstructor( registrationNumber,
-                                                  username, email,90000.0);
-            }
-            
-        } catch (Exception e) {
-            // TODO: handle exception
-            throw new AuthException("Failed to create user: " + e.getMessage());
+        if(role.equalsIgnoreCase("student")){
+            newUser=system.addStudent(username,email);
+        }else{
+            newUser=system.addInstructor(username, email, 7000.0);
         }
 
-     
-
-        // ----> save user
-        if(newUser instanceof Student){
-            DatabaseManager.saveStudent(regHah, registrationNumber, username, email);
+        if(newUser==null){
+            throw new AuthException("Failed to create user");
         }
-        else{
-            DatabaseManager.saveInstructor(regHah, registrationNumber, username, email, 0);
-        }
-
-        // -----> save credentials
-        DatabaseManager.saveCredential(regHah, username, hashPassword(password), role);
-
-        System.out.println("Signup successful for " + username + " with role " + role);
-
-
-        return newUser;
-
-    }
-        */
+        CredentialDAO.saveCredential(newUser.getId(),
+        username,
+        password,
+        role
+        );
         
-
-    private String hashPassword(String password) {
-
-        try {
-            MessageDigest digets = MessageDigest.getInstance("SHA-256");
-            byte[] hashedbytes = digets.digest(password.getBytes());// convert String to bytes
-            StringBuilder toHex = new StringBuilder();
-            for (byte b : hashedbytes) {
-                toHex.append(String.format("%02x", b));
-            }
-            return toHex.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Hashing algorithm not found: " + e.getMessage());
-        }
+        System.out.println("Signup successful" + username + " " + role);
+        return newUser;
 
     }
 }

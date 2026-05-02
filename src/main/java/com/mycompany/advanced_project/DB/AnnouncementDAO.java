@@ -10,7 +10,7 @@ import com.mycompany.advanced_project.service.System_controller;
 
 public class AnnouncementDAO {
     
-/* 
+        /* must be called after loadCourses()*/
         public static void loadAnnouncements(System_controller system){
         String sql = "SELECT * FROM announcements ORDER BY id";
         try(Connection conn=DBConnection.connect();
@@ -18,25 +18,28 @@ public class AnnouncementDAO {
         ResultSet rs = stmt.executeQuery();
         ){
             while(rs.next()){
-                system.postAnnouncement(
-                rs.getString("course_id"),
+                system.loadAnnouncement(
+                rs.getInt("course_id"),
                 rs.getString("content"),
-                rs.getString("timestamp")
-                 );
+                rs.getString("timestamp"))
+                ;
+                
+                
             }
-        }catch (SQLException e){
+        }
+        catch (SQLException e){
             System.err.println(" Loading Announcements failed: "+e.getMessage());
         }
     };
-*/
+
 
       // save announcemet
-    public static void saveAnnouncement(String courseId, Announcement a) {
+    public static void saveAnnouncement(int courseId, Announcement a) {
         String sql = "INSERT INTO announcements" +
                 "(course_id,content,timestamp)VALUES(?,?,?)";
         try (Connection conn = DBConnection.connect();
-                PreparedStatement stmt = conn.prepareStatement(sql);) {
-            stmt.setString(1, courseId);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, courseId);
             stmt.setString(2, a.getContent());
             stmt.setString(3, a.getTimestamp());
             stmt.executeUpdate();

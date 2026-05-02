@@ -7,16 +7,16 @@ import java.util.*;
 import com.mycompany.advanced_project.interfaces.Enrollable;
 
 public class Student extends User implements Enrollable{
-    private List<String> enrolledCourses;
+    private List<Course> enrolledCourses;
     
     public Student(String username,String email){
         super(username, email);
-        this.enrolledCourses=new ArrayList<String>();
+        this.enrolledCourses=new ArrayList<>();
     }
     
-    public void enrollCourse(String courseId){
-        if (!enrolledCourses.contains(courseId)){
-            enrolledCourses.add(courseId);
+    public void enrollCourse(Course course){
+        if (!enrolledCourses.contains(course)){
+            enrolledCourses.add(course);
         }
     }
     public void removeCourse(String courseId) {
@@ -24,7 +24,7 @@ public class Student extends User implements Enrollable{
 }
 
     
-    public List<String>getEnrolledCourses(){
+    public List<Course>getEnrolledCourses(){
         return enrolledCourses;
     }
     

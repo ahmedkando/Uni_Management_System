@@ -8,16 +8,16 @@ import com.mycompany.advanced_project.service.System_controller;
 import java.util.*;
 
 public class Uni_managment_system {
-    
+
     public static void runConsole(System_controller system) {
-         Student s1 = system.addStudent("john_doe", "john@email.com");
-         Instructor i1 = system.addInstructor("dr_smith", "smith@email.com");
-         Course c1 = system.addCourse("Java Programming", 3, "Online", "Zoom");
-         
-         System.out.println("Sample IDs created:");
-         System.out.println("Student: " + s1.getId());
-         System.out.println("Instructor: " + i1.getId());
-         System.out.println("Course: " + c1.getId());
+        Student s1 = system.addStudent("john_doe", "john@email.com");
+        Instructor i1 = system.addInstructor("dr_smith", "smith@email.com", 99.0);
+        Course c1 = system.addCourse("Java Programming", 3, "Online", "Zoom");
+
+        System.out.println("Sample IDs created:");
+        System.out.println("Student: " + s1.getId());
+        System.out.println("Instructor: " + i1.getId());
+        System.out.println("Course: " + c1.getId());
         Scanner input = new Scanner(System.in);
         boolean run = true;
 
@@ -76,7 +76,7 @@ public class Uni_managment_system {
         String username = input.nextLine();
         System.out.print("Enter email: ");
         String email = input.nextLine();
-        Instructor i = system.addInstructor(username, email);
+        Instructor i = system.addInstructor(username, email, 99.0);
         System.out.println("\nCreated: " + i.getInfo());
     }
 
@@ -97,44 +97,41 @@ public class Uni_managment_system {
 
     private static void enrollStudent(System_controller system, Scanner input) {
         System.out.print("Enter Student ID: ");
-        String sid = input.nextLine();
+        int sid = input.nextInt();
         System.out.print("Enter Course ID: ");
-        String cid = input.nextLine();
+        int cid = input.nextInt();
 
         System.out.println(
-            system.enrollStudent(sid, cid)
-                ? "Enrollment successful!"
-                : "Enrollment failed!"
-        );
+                system.enrollStudent(sid, cid)
+                        ? "Enrollment successful!"
+                        : "Enrollment failed!");
     }
 
     private static void removeStudent(System_controller system, Scanner input) {
         System.out.print("Enter Student ID: ");
-        String id = input.nextLine();
+        int id = input.nextInt();
 
         System.out.println(
-            system.removeStudent(id)
-                ? "Student removed successfully!"
-                : "Student not found!"
-        );
+                system.removeStudent(id)
+                        ? "Student removed successfully!"
+                        : "Student not found!");
     }
 
     private static void postAnnouncement(System_controller system, Scanner input) {
         System.out.print("Enter Course ID: ");
-        String cid = input.nextLine();
+        int cid = input.nextInt();
         System.out.print("Enter announcement text: ");
         String text = input.nextLine();
 
         System.out.println(
-            system.postAnnouncement(cid, text)
-                ? "Announcement posted!"
-                : "Course not found!"
-        );
+                system.postAnnouncement(cid, text)
+                        ? "Announcement posted!"
+                        : "Course not found!");
     }
 
     private static void viewFeed(System_controller system, Scanner input) {
         System.out.print("Enter Student ID: ");
-        String sid = input.nextLine();
+        int sid = input.nextInt();
 
         List<String> feed = system.getStudentFeed(sid);
         System.out.println("\n===== Student Feed =====");
@@ -142,23 +139,22 @@ public class Uni_managment_system {
         if (feed.isEmpty()) {
             System.out.println("No announcements found.");
         } else {
-            feed.forEach(msg -> System.out.println("• " + msg));
+            feed.forEach(msg -> System.out.println(". " + msg));
         }
     }
 
     private static void sendMessage(System_controller system, Scanner input) {
         System.out.print("From User ID: ");
-        String from = input.nextLine();
+        int from = input.nextInt();
         System.out.print("To User ID: ");
-        String to = input.nextLine();
+        int to = input.nextInt();
         System.out.print("Message: ");
         String msg = input.nextLine();
 
         System.out.println(
-            system.sendMessage(from, to, msg)
-                ? "Message sent!"
-                : "Invalid user IDs!"
-        );
+                system.sendMessage(from, to, msg)
+                        ? "Message sent!"
+                        : "Invalid user IDs!");
     }
 
     private static void listAll(System_controller system) {

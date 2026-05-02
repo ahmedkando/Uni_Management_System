@@ -2,23 +2,23 @@
 package com.mycompany.advanced_project.Classes;
 
 public class Message {
-    private String fromUserId;
-    private String toUserId;
+    private User fromUserId;
+    private User toUserId;
     private String content;
     private String timestamp;
     
-    public Message(String fromUserId, String toUserId, String content) {
+    public Message(User fromUserId, User toUserId, String content) {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
         this.content = content;
         this.timestamp = java.time.LocalDateTime.now().toString();
     }
     
-    public String getFromUserId() {
+    public User getFromUserId() {
         return fromUserId;
     }
     
-    public String getToUserId() {
+    public User getToUserId() {
         return toUserId;
     }
     
