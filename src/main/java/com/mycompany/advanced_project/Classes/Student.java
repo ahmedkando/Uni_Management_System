@@ -4,9 +4,8 @@ package com.mycompany.advanced_project.Classes;
 
 import java.util.*;
 
-import com.mycompany.advanced_project.interfaces.Enrollable;
 
-public class Student extends User implements Enrollable{
+public class Student extends User{
     private List<Course> enrolledCourses;
     
     public Student(String username,String email){
@@ -19,8 +18,8 @@ public class Student extends User implements Enrollable{
             enrolledCourses.add(course);
         }
     }
-    public void removeCourse(String courseId) {
-    enrolledCourses.remove(courseId);
+    public void removeCourse(Course course) {
+    enrolledCourses.remove(course);
 }
 
     
