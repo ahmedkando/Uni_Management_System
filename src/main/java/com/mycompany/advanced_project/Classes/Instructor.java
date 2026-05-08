@@ -4,10 +4,9 @@ package com.mycompany.advanced_project.Classes;
 
 import java.util.*;
 
-import com.mycompany.advanced_project.interfaces.Payable;
 
-public class Instructor extends User implements Payable{
-    private List<String>teachingCourses;
+public class Instructor extends User{
+    private List<Course>teachingCourses;
     private double salary;
     
     public Instructor(String username,String email){
@@ -16,13 +15,13 @@ public class Instructor extends User implements Payable{
         this.salary=3000.0;
     }
     
-    public void assignCourse(String courseId){
-        if (!teachingCourses.contains(courseId)){
-            teachingCourses.add(courseId);
+    public void assignCourse(Course course){
+        if (!teachingCourses.contains(course)){
+            teachingCourses.add(course);
         }
     }
     
-    public List<String>getTeachingCourses(){
+    public List<Course>getTeachingCourses(){
         return teachingCourses;
     }
     
