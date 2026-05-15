@@ -1,15 +1,14 @@
 package com.mycompany.advanced_project.UI;
-import javax.swing.*;
-import java.awt.*;
+import javafx.geometry.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 
-public class HeaderPanel extends JPanel{
+public class HeaderPanel extends BorderPane {
     
-    public HeaderPanel(LayoutManager layout){
-        setLayout(layout);
-        setOpaque(true);
-        setBackground(new Color(0, 51, 102));
-        setPreferredSize(new Dimension(850, 50));
-        setBorder(BorderFactory.createEmptyBorder(0, 28, 0, 28));
+    public HeaderPanel() {
+        setBackground(new Background(new BackgroundFill(Color.rgb(0, 51, 102), null, null)));
+        setPrefHeight(50);
+        setPadding(new Insets(0, 28, 0, 28));
     }
     
 }
