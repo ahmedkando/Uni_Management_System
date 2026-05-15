@@ -1,29 +1,27 @@
 package com.mycompany.advanced_project.UI;
-import javax.swing.*;
-import java.awt.*;
+           
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.text.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 
-public class PrimaryButton extends JButton{
+public class PrimaryButton extends Button{
     public PrimaryButton(String text)
     {
         super(text);
-        setFocusPainted(false);
-        setFont(new Font("Arial", Font.BOLD, 15));
-        setForeground(Color.WHITE);
-        setBackground(new Color(77, 163, 255));
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        setTextFill(Color.WHITE);
+        setBackground(new Background(new BackgroundFill(Color.rgb(77, 163, 255), null, null)));
+        setCursor(Cursor.HAND);
         // ============================hover effect
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-                setBackground(new Color(0, 0, 0));
+        setOnMouseEntered(e -> {
+                setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0), null, null)));
                 
-            }
+            });
 
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                setBackground(new Color(77, 163, 255));
-                
-            }
+            setOnMouseExited(e -> {
+                setBackground(new Background(new BackgroundFill(Color.rgb(77, 163, 255), null, null)));
         });
     }
 }
