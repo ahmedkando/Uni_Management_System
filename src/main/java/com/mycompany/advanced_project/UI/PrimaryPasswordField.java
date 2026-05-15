@@ -1,22 +1,31 @@
 package com.mycompany.advanced_project.UI;
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 
-public class PrimaryPasswordField extends JPasswordField{
+public class PrimaryPasswordField extends PasswordField{
+    private final Border focusBorder = new Border(new BorderStroke(
+            Color.rgb(77, 163, 255),
+            BorderStrokeStyle.SOLID,
+            CornerRadii.EMPTY,
+            new BorderWidths(1)
+    ));
+
+    private final Border defaultBorder = new Border(new BorderStroke(
+            Color.GRAY,
+            BorderStrokeStyle.SOLID,
+            CornerRadii.EMPTY,
+            new BorderWidths(1)
+    ));
     public PrimaryPasswordField(){
-        setCursor(new Cursor(Cursor.TEXT_CURSOR));
-        addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                setBorder(new LineBorder(new Color(77, 163, 255), 1));
-            }
+        setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, null)));
+        setBorder(defaultBorder);
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                setBorder(new LineBorder(Color.GRAY, 1));
+        focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                setBorder(focusBorder);
+            } else {
+                setBorder(defaultBorder);
             }
         });
     }
