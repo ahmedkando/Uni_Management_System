@@ -1,11 +1,9 @@
 package com.mycompany.advanced_project.UI;
-import javax.swing.*;
-import java.awt.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 
-public class SidePanel extends JPanel {
-     public SidePanel(LayoutManager layout){
-        setLayout(layout);
-        setOpaque(true);
-        setBackground(new Color(0, 51, 102));
+public class SidePanel extends BorderPane {
+     public SidePanel(){
+            setBackground(new Background(new BackgroundFill(Color.rgb(0, 51, 102), null, null)));
     }
 }
