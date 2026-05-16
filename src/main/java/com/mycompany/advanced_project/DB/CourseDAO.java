@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.mycompany.advanced_project.Classes.Course;
 import com.mycompany.advanced_project.Classes.OfflineCourse;
@@ -45,15 +46,14 @@ public class CourseDAO {
                 : ((OfflineCourse) c).getClassroom();
 
         String sql = "INSERT INTO courses" +
-                "(id,name,credits,type,detail) VALUES (?,?,?,?,?)";
+                "(name,credits,type,detail) VALUES (?,?,?,?)";
 
         try (Connection conn = DBConnection.connect();
-                PreparedStatement stmt = conn.prepareStatement(sql);) {
-            stmt.setInt(1, c.getId());
-            stmt.setString(2, c.getName());
-            stmt.setInt(3, c.getCredits());
-            stmt.setString(4, type);
-            stmt.setString(5, detail);
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+            stmt.setString(1, c.getName());
+            stmt.setInt(2, c.getCredits());
+            stmt.setString(3, type);
+            stmt.setString(4, detail);
             stmt.executeUpdate();
             ResultSet keys = stmt.getGeneratedKeys();
             if (keys.next()) return keys.getInt(1);

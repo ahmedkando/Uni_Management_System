@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FullSystemTest",
+            "request": "launch",
+            "mainClass": "com.mycompany.advanced_project.FullSystemTest",
+            "projectName": "advanced_project"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

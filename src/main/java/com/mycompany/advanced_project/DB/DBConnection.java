@@ -49,8 +49,8 @@ public class DBConnection {
             );
             conn.createStatement().execute(
                 "CREATE TABLE IF NOT EXISTS enrollments (" +
-                "student_id VARCHAR(20) NOT NULL, " +
-                "course_id VARCHAR(10) NOT NULL, " +
+                "student_id INT NOT NULL, " +
+                "course_id INT NOT NULL, " +
                 "PRIMARY KEY (student_id, course_id))"
             );
             conn.createStatement().execute(

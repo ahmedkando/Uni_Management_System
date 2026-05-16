@@ -52,7 +52,7 @@ public class UniversityGUI extends Application {
     TranslateTransition slide = new TranslateTransition();
     private Pane bubbles = new Pane();
 
-        public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) {
         BorderPane mainLayout = new BorderPane();
 
         primaryStage.setTitle("University Management System");
@@ -115,7 +115,6 @@ public class UniversityGUI extends Application {
 
     }
 
-    
     private void addHeaderLabel(HeaderPanel header) {
         HeaderLabel = new Label("SONDOS");
         HeaderLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -213,9 +212,7 @@ public class UniversityGUI extends Application {
         menu.getChildren().add(wrapper);
     }
 
-
-
-       private void startBinaryRain() {
+    private void startBinaryRain() {
         if (isRaining)
             return;
         isRaining = true;
@@ -273,13 +270,10 @@ public class UniversityGUI extends Application {
         fall.play();
     }
 
-
-
-
     private ExecutorService labelExecutor;
     private volatile boolean isLabelAnimating = false;
 
-        private Pane addLogInPanel(StackPane content) {
+    private Pane addLogInPanel(StackPane content) {
         StackPane p = new TemplatePanel();
         p.setPadding(new Insets(100, 0, 0, 50));
         p.setId("LOG_IN");
@@ -309,19 +303,19 @@ public class UniversityGUI extends Application {
                 @Override
                 public void onSuccess(User user) {
                     Platform.runLater(() -> {
-                    LoggedUserID = String.valueOf(user.getId());
-                    UserName = user.getUsername();
-                    LoggedUserRole = CredentialDAO.getRole(user.getId());
-                    showInside(content, true);
-                    u.clear();
-                    e.clear();
+                        LoggedUserID = String.valueOf(user.getId());
+                        UserName = user.getUsername();
+                        LoggedUserRole = CredentialDAO.getRole(user.getId());
+                        showInside(content, true);
+                        u.clear();
+                        e.clear();
                     });
                 }
 
                 @Override
                 public void onFailure(Throwable ex) {
                     Platform.runLater(() -> {
-                         ex.printStackTrace(); 
+                        ex.printStackTrace();
                         showAlert("Login failed" + ex.getMessage());
                     });
                 }
@@ -380,24 +374,24 @@ public class UniversityGUI extends Application {
 
                         @Override
                         public void onSuccess(User user) {
-                            Platform.runLater(() ->{
+                            Platform.runLater(() -> {
 
-                            showAlert("Signed Up Successfully!");
-                            LoggedUserID = String.valueOf(user.getId());
-                            UserName = user.getUsername();
-                            LoggedUserRole = roleBox.getValue();
-                            showInside(content, true);
-                            u.clear();
-                            e.clear();
-                        });
+                                showAlert("Signed Up Successfully!");
+                                LoggedUserID = String.valueOf(user.getId());
+                                UserName = user.getUsername();
+                                LoggedUserRole = roleBox.getValue();
+                                showInside(content, true);
+                                u.clear();
+                                e.clear();
+                            });
                         }
 
                         @Override
                         public void onFailure(Throwable e) {
-                                Platform.runLater(() ->{
-                                 e.printStackTrace(); 
-                            showAlert("Signup failed" + e.getMessage());
-                                });
+                            Platform.runLater(() -> {
+                                e.printStackTrace();
+                                showAlert("Signup failed" + e.getMessage());
+                            });
 
                         }
 
@@ -442,15 +436,19 @@ public class UniversityGUI extends Application {
 
                 @Override
                 public void onSuccess(Student s) {
-                    showAlert("Student ID: " + s.getId());
-                    u.clear();
-                    e.clear();
+                    Platform.runLater(() -> {
+                        showAlert("Student ID: " + s.getId());
+                        u.clear();
+                        e.clear();
+                    });
                 }
 
                 @Override
                 public void onFailure(Throwable e) {
-                    showAlert("Error: " + e.getMessage());
-                     e.printStackTrace(); 
+                    Platform.runLater(() -> {
+                        showAlert("Error: " + e.getMessage());
+                        e.printStackTrace();
+                    });
                 }
 
             });
@@ -493,15 +491,19 @@ public class UniversityGUI extends Application {
 
                 @Override
                 public void onSuccess(Instructor i) {
-                    showAlert("Instructor ID: " + i.getId());
-                    u.clear();
-                    e.clear();
+                    Platform.runLater(() -> {
+                        showAlert("Instructor ID: " + i.getId());
+                        u.clear();
+                        e.clear();
+                    });
                 }
 
-               @Override
+                @Override
                 public void onFailure(Throwable e) {
-                    showAlert("Error: " + e.getMessage());
-                     e.printStackTrace(); 
+                    Platform.runLater(() -> {
+                        showAlert("Error: " + e.getMessage());
+                        e.printStackTrace();
+                    });
                 }
 
             });
@@ -566,17 +568,21 @@ public class UniversityGUI extends Application {
 
                 @Override
                 public void onSuccess(Course c) {
-                    showAlert("Course ID: " + c.getId());
-                    name.clear();
-                    credits.clear();
-                    type.clear();
-                    detail.clear();
+                    Platform.runLater(() -> {
+                        showAlert("Course ID: " + c.getId());
+                        name.clear();
+                        credits.clear();
+                        type.clear();
+                        detail.clear();
+                    });
                 }
 
                 @Override
                 public void onFailure(Throwable e) {
-                    showAlert("Error: " + e.getMessage());
-                     e.printStackTrace(); 
+                    Platform.runLater(() -> {
+                        showAlert("Error: " + e.getMessage());
+                    });
+                    e.printStackTrace();
                 }
             });
 
@@ -621,14 +627,19 @@ public class UniversityGUI extends Application {
             system.enrollStudentAsync(studentid, courseid, new AsyncCallBack<Boolean>() {
                 @Override
                 public void onSuccess(Boolean success) {
-                    showAlert(success ? "Enrolled " : "Failed ");
+                    Platform.runLater(() -> {
+
+                        showAlert(success ? "Enrolled " : "Failed ");
+                    });
 
                 }
 
                 @Override
                 public void onFailure(Throwable e) {
-                    showAlert("Error: " + e.getMessage());
-                     e.printStackTrace(); 
+                    Platform.runLater(() -> {
+                        showAlert("Error: " + e.getMessage());
+                    });
+                    e.printStackTrace();
                 }
 
             });
@@ -668,13 +679,17 @@ public class UniversityGUI extends Application {
             system.removeStudentAsync(studentId, new AsyncCallBack<Boolean>() {
                 @Override
                 public void onSuccess(Boolean removed) {
-                    showAlert(removed ? "Student removed!" : "Student not found.");
+                    Platform.runLater(() -> {
+                        showAlert(removed ? "Student removed!" : "Student not found.");
+                    });
                 }
 
                 @Override
                 public void onFailure(Throwable e) {
-                    showAlert("Error: " + e.getMessage());
-                     e.printStackTrace(); 
+                    Platform.runLater(() -> {
+                        showAlert("Error: " + e.getMessage());
+                    });
+                    e.printStackTrace();
                 }
             });
         });
@@ -720,13 +735,17 @@ public class UniversityGUI extends Application {
             system.postAnnouncementAsync(courseId, content, new AsyncCallBack<Boolean>() {
                 @Override
                 public void onSuccess(Boolean posted) {
-                    showAlert(posted ? "Posted!" : "Course not found.");
+                    Platform.runLater(() -> {
+                        showAlert(posted ? "Posted!" : "Course not found.");
+                    });
                 }
 
-               @Override
+                @Override
                 public void onFailure(Throwable e) {
-                    showAlert("Error: " + e.getMessage());
-                     e.printStackTrace(); 
+                    Platform.runLater(() -> {
+                        showAlert("Error: " + e.getMessage());
+                    });
+                    e.printStackTrace();
                 }
             });
         });
@@ -760,13 +779,17 @@ public class UniversityGUI extends Application {
             system.getStudentFeedAsync(studentId, new AsyncCallBack<List<String>>() {
                 @Override
                 public void onSuccess(List<String> feed) {
-                    area.setText(String.join("\n", feed));
+                    Platform.runLater(() -> {
+                        area.setText(String.join("\n", feed));
+                    });
                 }
 
                 @Override
                 public void onFailure(Throwable ex) {
-                    showAlert("Error loading feed: " + ex.getMessage());
-                     ex.printStackTrace(); 
+                    Platform.runLater(() -> {
+                        showAlert("Error loading feed: " + ex.getMessage());
+                    });
+                    ex.printStackTrace();
                 }
             });
         });
@@ -812,13 +835,15 @@ public class UniversityGUI extends Application {
             system.sendMessageAsync(formId, toId, msgText, new AsyncCallBack<Boolean>() {
                 @Override
                 public void onSuccess(Boolean sent) {
-                    showAlert(sent ? "Sent!" : "Failed (recipient not found).");
+                    Platform.runLater(() -> {
+                        showAlert(sent ? "Sent!" : "Failed (recipient not found).");
+                    });
                 }
 
                 @Override
                 public void onFailure(Throwable ex) {
-                    showAlert("Error: " + ex. getMessage());
-                     ex.printStackTrace();
+                    showAlert("Error: " + ex.getMessage());
+                    ex.printStackTrace();
                 }
             });
 
@@ -861,52 +886,47 @@ public class UniversityGUI extends Application {
         return p;
     }
 
-
-
-    private void showInside(StackPane content, boolean flag)
-    {
-        if (flag==true){
-            //i will be inside
+    private void showInside(StackPane content, boolean flag) {
+        if (flag == true) {
+            // i will be inside
             HeaderLabel.setPadding(new Insets(13, 0, 0, 0));
-            HeaderLabel.setText("Welcome, "+UserName);
+            HeaderLabel.setText("Welcome, " + UserName);
             HeaderLabel.setVisible(true);
             startLabelAnimation(HeaderLabel);
             slide.play();
             stopRainAnimation();
             menu.setVisible(true);
             Headerbtn.setText("LogOut");
-            currentPage="Inside";
+            currentPage = "Inside";
             content.getChildren().forEach(node -> {
-            if ("FEED".equals(node.getId())) {
-                node.setVisible(true);
-                node.toFront();
-            } else {
-                node.setVisible(false);
-            }
-        });
-           
-        }
-        else
-        {
-            //i will be in login
+                if ("FEED".equals(node.getId())) {
+                    node.setVisible(true);
+                    node.toFront();
+                } else {
+                    node.setVisible(false);
+                }
+            });
+
+        } else {
+            // i will be in login
             menu.setVisible(false);
             startBinaryRain();
             Headerbtn.setText("SignUp");
-            currentPage="Login";
+            currentPage = "Login";
             slide.stop();
             HeaderLabel.setVisible(false);
             content.getChildren().forEach(node -> {
-            if ("LOG_IN".equals(node.getId())) {
-                node.setVisible(true);
-                node.toFront();
-            } else {
-                node.setVisible(false);
-            }
-        });
-            
+                if ("LOG_IN".equals(node.getId())) {
+                    node.setVisible(true);
+                    node.toFront();
+                } else {
+                    node.setVisible(false);
+                }
+            });
+
         }
     }
- 
+
     public void startLabelAnimation(Label headerLabel) {
         if (isLabelAnimating)
             return;
@@ -953,14 +973,12 @@ public class UniversityGUI extends Application {
         }
     }
 
- 
     private VBox createFormContainer() {
         VBox form = new VBox(18);
         form.setAlignment(Pos.TOP_CENTER);
         form.setPadding(new Insets(30));
         return form;
     }
-
 
     private void addLabel(Pane p, String text, int x, int y, TextInputControl w) {
         Label l = new Label(text);
