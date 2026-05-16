@@ -51,7 +51,7 @@ public class AuthManager {
     }
 
       public User signup( String username, String email, String role, String password,
-            System_controller system) throws AuthException {
+            System_controller system) throws AuthException, InvalIdUserException {
 
         // ---> validate the params
         if (username == null || username.isBlank())

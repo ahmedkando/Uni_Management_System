@@ -58,7 +58,7 @@ public class CourseDAO {
             ResultSet keys = stmt.getGeneratedKeys();
             if (keys.next()) return keys.getInt(1);
         } catch (SQLException e) {
-            System.out.println("saving Course failed" + e.getMessage());
+            throw new RuntimeException("Failed to save course: " + e.getMessage(), e);
         }
         return -1;
     }

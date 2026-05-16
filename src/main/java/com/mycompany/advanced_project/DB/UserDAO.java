@@ -18,8 +18,7 @@ public class UserDAO {
         } 
         catch (SQLException e) {
             // TODO: handle exception
-            System.out.println("saving Student failed" + e.getMessage());
-        }
+            throw new RuntimeException("Failed to save student: " + e.getMessage(), e);}
         return -1;
     }
 
@@ -37,7 +36,8 @@ public class UserDAO {
             if (keys.next()) return keys.getInt(1);
         } catch (SQLException e) {
             // TODO: handle exception
-            System.out.println("saving Instructor failed" + e.getMessage());
+            throw new RuntimeException("Failed to save instructor: " + e.getMessage(), e);
+
         }
         return -1;
     }
@@ -56,7 +56,7 @@ public class UserDAO {
                  );
             }
         }catch (SQLException e){
-            System.err.println(" Loading Students failed: "+e.getMessage());
+            System.err.println("Failed to load students: " + e.getMessage());
         }
     };
 
@@ -75,7 +75,7 @@ public class UserDAO {
                  );
             }
         }catch (SQLException e){
-            System.err.println(" Loading Instructors failed: "+e.getMessage());
+            System.err.println("Failed to load instructors: " + e.getMessage());
         }
     };
     
@@ -99,7 +99,7 @@ public class UserDAO {
             del_credentials.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("Deleting Student failed" + e.getMessage());
+            throw new RuntimeException("Failed to delete student: " + e.getMessage(), e);
         }
     };
 }

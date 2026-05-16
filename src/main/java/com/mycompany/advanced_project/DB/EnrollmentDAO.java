@@ -19,7 +19,7 @@ public class EnrollmentDAO {
             stmt.setInt(2, courseId);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("saving Enrollment failed" + e.getMessage());
+            throw new RuntimeException("Failed to save enrollment: " + e.getMessage(), e);
         }
     }
 
@@ -46,17 +46,5 @@ public class EnrollmentDAO {
             System.out.println("Loading Enrollments failed: " + e.getMessage());
         }
     }
-
-    public static void deleteEnrollment(int studentId, int courseId) {
-        String sql = "DELETE FROM enrollments WHERE student_id=? AND course_id=?";
-        try (Connection conn = DBConnection.connect();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, studentId);
-            stmt.setInt(2, courseId);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Deleting Enrollment failed" + e.getMessage());
-        }
-    }
-
+    
 }

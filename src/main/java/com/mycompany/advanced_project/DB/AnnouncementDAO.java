@@ -21,10 +21,7 @@ public class AnnouncementDAO {
                 system.loadAnnouncement(
                 rs.getInt("course_id"),
                 rs.getString("content"),
-                rs.getString("timestamp"))
-                ;
-                
-                
+                rs.getString("timestamp"));
             }
         }
         catch (SQLException e){
@@ -44,7 +41,7 @@ public class AnnouncementDAO {
             stmt.setString(3, a.getTimestamp());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("saving Announcement failed" + e.getMessage());
+            throw new RuntimeException("Failed to save announcement: " + e.getMessage(), e);
         }
     }
 }

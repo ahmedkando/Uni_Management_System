@@ -19,7 +19,7 @@ public class CredentialDAO {
         }
 
         catch (SQLException e) {
-            System.out.println("saving Credential failed" + e.getMessage());
+            throw new RuntimeException("Failed to save credential: " + e.getMessage(), e);
         }
     }
 
