@@ -27,6 +27,9 @@ public abstract class Course{
     public int getCredits(){ 
         return credits; 
     }
+    public void setId(int id){ 
+        this.id = id; 
+    }
     
     public void addStudent(Student student){
         if (!students.contains(student)){

@@ -4,12 +4,11 @@ import java.sql.*;
 
 public class CredentialDAO {
 
-
-
     public static void saveCredential(int userId, String username, String password, String role) {
+            System.out.println("Saved credential for user ID: " + userId + " with role: " + role);
 
-        String sql = "INSERT  INTO credentials" +
-                "(user_id username, password, role) Values(?,?,?,?)";
+
+        String sql = "INSERT INTO credentials(user_id, username, password, role) VALUES(?,?,?,?)";
         try (Connection conn = DBConnection.connect();
                 PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setInt(1, userId);
@@ -24,9 +23,27 @@ public class CredentialDAO {
         }
     }
 
+    public static String getRole(int userId) {
+        String sql = "SELECT role FROM credentials WHERE user_id=?";
+        try (Connection conn = DBConnection.connect();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("role");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to get role : "+ e.getMessage());
+
+        }
+        return null;//not found;
+
+    }
+
     /**
-      returns [userId, password, role] for the given username,
-      or null if no account exists.
+     * returns [userId, password, role] for the given username,
+     * or null if no account exists.
      */
     public static String[] findCredential(String username) {
         String sql = "SELECT user_id, password, role FROM credentials WHERE username=?";
@@ -58,8 +75,5 @@ public class CredentialDAO {
         }
         return false;
     }
-
-
-
 
 }

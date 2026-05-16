@@ -8,6 +8,7 @@ import java.util.*;
 public class Instructor extends User{
     private List<Course>teachingCourses;
     private double salary;
+
     
     public Instructor(String username,String email){
         super(username,email); 
@@ -20,7 +21,6 @@ public class Instructor extends User{
             teachingCourses.add(course);
         }
     }
-    
     public List<Course>getTeachingCourses(){
         return teachingCourses;
     }

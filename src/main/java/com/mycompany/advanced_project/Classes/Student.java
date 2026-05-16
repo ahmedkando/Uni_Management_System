@@ -6,6 +6,7 @@ import java.util.*;
 
 
 public class Student extends User{
+  
     private List<Course> enrolledCourses;
     
     public Student(String username,String email){
@@ -18,6 +19,7 @@ public class Student extends User{
             enrolledCourses.add(course);
         }
     }
+  
     public void removeCourse(Course course) {
     enrolledCourses.remove(course);
 }

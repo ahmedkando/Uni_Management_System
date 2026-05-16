@@ -4,6 +4,8 @@ import com.mycompany.advanced_project.DB.*;
 import com.mycompany.advanced_project.Classes.User;
 import com.mycompany.advanced_project.exceptions.*;
 
+import javafx.concurrent.Task;
+
 
 public class AuthManager {
 
@@ -24,7 +26,7 @@ public class AuthManager {
         }
         // Find user
         for (User u : system.getAllUsers()) {
-            if (u==null) {
+            if (u.getId() == Integer.parseInt(cre[0])) {
                 System.out.println("login successful");
                 return u;
             }
@@ -32,6 +34,20 @@ public class AuthManager {
 
         throw new AuthException("");
 
+    }
+
+    public void loginAsync(String username, String password, System_controller system, AsyncCallBack<User> callback) {
+        Task<User> loginTask = new Task<>() {
+            @Override
+            protected User call() throws Exception {
+                return login(username, password, system);
+            }
+        };
+
+        loginTask.setOnSucceeded(e -> callback.onSuccess(loginTask.getValue()));
+        loginTask.setOnFailed(e -> callback.onFailure(loginTask.getException()));
+
+        new Thread(loginTask).start();
     }
 
       public User signup( String username, String email, String role, String password,
@@ -70,4 +86,16 @@ public class AuthManager {
         return newUser;
 
     }
+    public void signupAsync(String username, String email, String role, String password,
+                        System_controller system, AsyncCallBack<User> callback) {
+    Task<User> task = new Task<>() {
+        @Override
+        protected User call() throws Exception {
+            return signup(username, email, role, password, system);
+        }
+    };
+    task.setOnSucceeded(e -> callback.onSuccess(task.getValue()));
+    task.setOnFailed(e -> callback.onFailure(task.getException()));
+    new Thread(task).start();
+}
 }
