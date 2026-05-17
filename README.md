@@ -86,4 +86,3 @@ To set up and run this system locally, ensure you have the following installed:
 *   **Save and retrieve data:** Any added or updated information is stored in the database and can be retrieved later.
 *   **Interact with the GUI:** The user can navigate through the interface using buttons, forms, and interactive GUI elements.
 *   **Close the application when finished:** The saved data will remain in the database for future use.
-*   
